@@ -21,7 +21,7 @@ class Category(models.Model):
         return self.name
 
 class Contact(models.Model):
-    AKA = models.CharField(max_length=50)
+    artistic_name = models.CharField(max_length=50)
     name = models.CharField(max_length=50, blank=True)
     phone = models.CharField(max_length=50)
     email = models.EmailField(max_length=254, blank=True)
@@ -34,4 +34,4 @@ class Contact(models.Model):
     
 
     def __str__(self) -> str:
-        return f'{self.AKA} {self.name}'
+        return f'{self.artistic_name} {self.name}'

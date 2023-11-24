@@ -21,7 +21,7 @@ def search(request):
         return redirect('contact: index')
     
     contacts = Contact.objects.filter(show=True).filter(
-        Q(AKA__icontains=search_value) |
+        Q(artistic_name__icontains=search_value) |
         Q(name__icontains=search_value) |
         Q(phone__icontains=search_value) |
         Q(email__icontains=search_value)
@@ -37,6 +37,6 @@ def search(request):
 
 def contact(request, contact_id):
     single_contact = get_object_or_404(Contact, pk=contact_id, show=True)
-    site_title = f'{single_contact.AKA} - '
+    site_title = f'{single_contact.artistic_name} - '
     context = {'contact': single_contact, 'site_title': site_title}
     return render(request, 'contact/contact.html', context)
