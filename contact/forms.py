@@ -16,7 +16,15 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = models.Contact
         fields = ('artistic_name', 'name', 'phone', 'email', 'description', 'category', 'picture')
-
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            self.add_error('email', ValidationError('This E-mail already exists', code='invalid'))
+        return email
+    
+    def clean_phone(self):
+        pass
 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(required=True, min_length=3)
@@ -30,7 +38,7 @@ class RegisterForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            self.add_error('email', ValidationError('Já existe este e-mail', code='invalid'))
+            self.add_error('email', ValidationError('This E-mail already exists', code='invalid'))
         return email
 
 class RegisterUpdateForm(forms.ModelForm):
@@ -74,7 +82,7 @@ class RegisterUpdateForm(forms.ModelForm):
 
         if current_email != email:
             if User.objects.filter(email=email).exists():
-                self.add_error('email', ValidationError('Já existe este e-mail', code='invalid'))
+                self.add_error('email', ValidationError('This E-mail already exists', code='invalid'))
         
         return email
     
