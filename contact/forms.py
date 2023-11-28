@@ -19,12 +19,16 @@ class ContactForm(forms.ModelForm):
     
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
+        if models.Contact.objects.filter(email=email).exists():
             self.add_error('email', ValidationError('This E-mail already exists', code='invalid'))
         return email
     
     def clean_phone(self):
-        pass
+        phone = self.cleaned_data.get('phone')
+        if models.Contact.objects.filter(phone=phone).exists():
+            self.add_error('phone', ValidationError('This phone already exists', code='invalid'))
+        return phone
+        
 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(required=True, min_length=3)
